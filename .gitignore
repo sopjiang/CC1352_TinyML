@@ -1,0 +1,32 @@
+# Directories / symlinks
+build/
+.vscode/
+edge-impulse-sdk
+edge-impulse-sdk/
+firmware-sdk
+firmware-sdk/
+model-parameters
+tflite-model
+.jxbrowser.userdata/
+.metadata/
+dvt/
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# TI config files
+ti_devices_config.c
+ti_drivers_config.c
+ti_drivers_config.h
+ti_utils_build_linker.cmd.genlibs
