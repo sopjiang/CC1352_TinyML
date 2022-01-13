@@ -1,12 +1,14 @@
+# DSLITE command $ ../../../../../Programs/TI/Uniflash_7.0.0/dslite.bat -c tools/user_files/configs/cc1352p1f3.ccxml -l tools/user_files/settings/generated.ufsettings -e -f -v gcc/build/edge-impulse-standalone.out
 BUILD := build
-SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR ?= ../../simplelink_cc13x2_26x2_sdk_5_10_00_48
-
+SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR ?= ../../../../../Programs/TI/simplelink_cc13x2_26x2_sdk_5_20_00_52
+SYSCONFIG_TOOL ?= d:\\Programs\\TI\\sysconfig_1.8.2\\sysconfig_cli.bat
+GCC_ARMCOMPILER ?= ../../../../../Programs/TI/gcc-arm-none-eabi-9-2019-q4-major
 
 include $(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/imports.mak
 
-CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
-CXX = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-g++"
-LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc"
+CC = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc.exe"
+CXX = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-g++.exe"
+LNK = "$(GCC_ARMCOMPILER)/bin/arm-none-eabi-gcc.exe"
 
 NAME = edge-impulse-standalone
 
@@ -23,26 +25,26 @@ APPFLAGS += \
 	-DEIDSP_LOAD_CMSIS_DSP_SOURCES=1 \
 
 CFLAGS = -I.. \
-    -I. \
-    -I$(BUILD) \
-    -DDeviceFamily_CC13X2 \
-    "-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/source" \
-    "-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos" \
-    "-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos/posix" \
-    -mcpu=cortex-m4 \
-    -march=armv7e-m \
-    -mthumb \
-    -mfloat-abi=hard \
-    -mfpu=fpv4-sp-d16 \
-    -ffunction-sections \
-    -fdata-sections \
-    -g \
-    -gstrict-dwarf \
-    -Wall \
-    "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
-    "-I$(GCC_ARMCOMPILER)/arm-none-eabi/include" \
+	-I. \
+	-I$(BUILD) \
+	-DDeviceFamily_CC13X2 \
+	"-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/source" \
+	"-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos" \
+	"-I$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos/posix" \
+	-mcpu=cortex-m4 \
+	-march=armv7e-m \
+	-mthumb \
+	-mfloat-abi=hard \
+	-mfpu=fpv4-sp-d16 \
+	-ffunction-sections \
+	-fdata-sections \
+	-g \
+	-gstrict-dwarf \
+	-Wall \
+	"-I$(GCC_ARMCOMPILER)/arm-none-eabi/include/newlib-nano" \
+	"-I$(GCC_ARMCOMPILER)/arm-none-eabi/include" \
 	$(APPFLAGS) \
-    -O3 \
+	-O3 \
 
 CXXFLAGS += $(CFLAGS) \
 	-std=gnu++11 \
@@ -53,27 +55,27 @@ CXXFLAGS += $(CFLAGS) \
 LIBSTDC = "${shell "$(CC)" $(CFLAGS) -print-file-name=libstdc++.a}"
 
 LFLAGS = -Wl,-T,../gcc/cc13x2_cc26x2_nortos.lds \
-    "-Wl,-Map,$(BUILD)/$(NAME).map" \
-    "-L$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/source" \
-    -eresetISR \
-    "-L$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos" \
-    ti_utils_build_linker.cmd.genlibs \
-    -l:ti/devices/cc13x2_cc26x2/driverlib/bin/gcc/driverlib.lib \
-    -march=armv7e-m \
-    -mthumb \
-    -mfloat-abi=hard \
-    -mfpu=fpv4-sp-d16 \
-    -nostartfiles \
-    -static \
-    -Wl,--gc-sections \
-    "-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/hard" \
-    -lgcc \
-    -lc \
-    -lm \
-    -lnosys \
+	"-Wl,-Map,$(BUILD)/$(NAME).map" \
+	"-L$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/source" \
+	-eresetISR \
+	"-L$(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/kernel/nortos" \
+	ti_utils_build_linker.cmd.genlibs \
+	-l:ti/devices/cc13x2_cc26x2/driverlib/bin/gcc/driverlib.lib \
+	-march=armv7e-m \
+	-mthumb \
+	-mfloat-abi=hard \
+	-mfpu=fpv4-sp-d16 \
+	-nostartfiles \
+	-static \
+	-Wl,--gc-sections \
+	"-L$(GCC_ARMCOMPILER)/arm-none-eabi/lib/thumb/v7e-m/hard" \
+	-lgcc \
+	-lc \
+	-lm \
+	-lnosys \
 	-Os \
 	$(LIBSTDC) \
-    --specs=nano.specs -u _printf_float
+	--specs=nano.specs -u _printf_float
 
 INC_APP += \
 	-I$(BUILD) \
@@ -172,31 +174,31 @@ ti_devices_config.c ti_drivers_config.c ti_utils_build_linker.cmd.genlibs ti_dri
 
 syscfg: ../$(NAME).syscfg
 	@ echo Generating configuration files...
-	@ $(SYSCONFIG_TOOL) --compiler gcc --product $(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
+	@ cmd.exe /c $(SYSCONFIG_TOOL) --compiler gcc --product $(SIMPLELINK_CC13X2_26X2_SDK_INSTALL_DIR)/.metadata/product.json --output $(@D) $<
 
 $(BUILD)/ti_devices_config.obj: ti_devices_config.c ti_drivers_config.h
 	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
+	@ cmd.exe /c $(CC) $(CFLAGS) $< -c -o $@
 
 $(BUILD)/ti_drivers_config.obj: ti_drivers_config.c ti_drivers_config.h
 	@ echo Building $@
-	@ $(CC) $(CFLAGS) $< -c -o $@
+	@ cmd.exe /c $(CC) $(CFLAGS) $< -c -o $@
 
 $(BUILD)/%.obj: %.c | $(BUILD)
-	@$(CC) $(CFLAGS) $(INC_APP) -c -o $@ $<
-	@echo $<
+	@ cmd.exe /c $(CC) $(CFLAGS) $(INC_APP) -c -o $@ $<
+	@ echo $<
 
 $(BUILD)/%.obj: %.cpp
-	@$(CXX) $(CXXFLAGS) $(INC_APP) -c -o $@ $<
-	@echo $<
+	@ cmd.exe /c $(CXX) $(CXXFLAGS) $(INC_APP) -c -o $@ $<
+	@ echo $<
 
 $(BUILD)/%.obj: %.cc
-	@$(CXX) $(CXXFLAGS) $(INC_APP) -c -o $@ $<
-	@echo $<
+	@ cmd.exe /c $(CXX) $(CXXFLAGS) $(INC_APP) -c -o $@ $<
+	@ echo $<
 
 $(BUILD)/$(NAME).out: $(BUILD)/$(OBJECTS)
 	@ echo linking $@
-	@ $(LNK)  $(BUILD)/$(OBJECTS)  $(LFLAGS) -o $(BUILD)/$(NAME).out
+	@ cmd.exe /c $(LNK)  $(BUILD)/$(OBJECTS)  $(LFLAGS) -o $(BUILD)/$(NAME).out
 
 $(BUILD): syscfg
 	mkdir -p $(BUILD)
